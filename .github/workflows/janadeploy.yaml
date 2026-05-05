@@ -7,8 +7,39 @@ on:
 
 jobs:
   build:
-    runs-on: runnerlabel
+    runs-on: runnerlabel   # or ubuntu-latest
+
+    environment: dev   # 👈 IMPORTANT (this links to your environment secrets)
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # ✅ Configure AWS credentials from Environment secrets
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      # ✅ Login to ECR
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region ap-south-1 | \
+          docker login --username AWS --password-stdin 897982268652.dkr.ecr.ap-south-1.amazonaws.com
+
+      # ✅ Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t ecr .
+
+      # ✅ Tag Docker image
+      - name: Tag Docker image
+        run: |
+          docker tag ecr:latest 897982268652.dkr.ecr.ap-south-1.amazonaws.com/ecr:latest
+
+      # ✅ Push to ECR
+      - name: Push to ECR
+        run: |
+          docker push 897982268652.dkr.ecr.ap-south-1.amazonaws.com/ecr:latest
