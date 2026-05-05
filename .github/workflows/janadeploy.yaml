@@ -13,10 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ✅ Verify AWS access (optional but recommended)
-      - name: Verify AWS Identity
-        run: aws sts get-caller-identity
-
       # ✅ Login to ECR
       - name: Login to ECR
         run: |
