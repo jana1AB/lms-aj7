@@ -1,0 +1,14 @@
+name: demo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: runnerlabel
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
