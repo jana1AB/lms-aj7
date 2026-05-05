@@ -13,10 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ✅ Verify AWS access (optional but recommended)
-      - name: Verify AWS Identity
-        run: aws sts get-caller-identity
-
       # ✅ Login to ECR
       - name: Login to ECR
         run: |
@@ -36,4 +32,3 @@ jobs:
       - name: Push to ECR
         run: |
           docker push 897982268652.dkr.ecr.ap-south-1.amazonaws.com/ecr:latest
-          
